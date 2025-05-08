@@ -1,0 +1,26 @@
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+from sklearn.metrics import classification_report
+from preprocessing import load_data, preprocess_data
+
+# Load and preprocess
+df = load_data('data/cicids_sample.csv')
+df_processed = preprocess_data(df)
+
+# Remove label if exists
+if 'Label' in df_processed.columns:
+    labels = df['Label'].apply(lambda x: 0 if x == 'Normal' else 1)
+    df_processed = df_processed.drop(columns=['Label'])
+else:
+    labels = None
+
+# Isolation Forest
+model = IsolationForest(n_estimators=100, contamination=0.03, random_state=42)
+df_processed['anomaly'] = model.fit_predict(df_processed)
+
+# Map predictions
+df_processed['anomaly'] = df_processed['anomaly'].map({1: 0, -1: 1})
+
+# Evaluation
+if labels is not None:
+    print(classification_report(labels, df_processed['anomaly']))
