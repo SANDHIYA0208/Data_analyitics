@@ -1,0 +1,18 @@
+# EDA Notebook (abbreviated)
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('data/cicids_sample.csv')  # Use a sample or full CICIDS dataset
+
+# Univariate analysis
+sns.histplot(df['Flow Duration'], bins=50, kde=True)
+plt.title('Distribution of Flow Duration')
+plt.show()
+
+# Correlation Heatmap
+corr = df.corr()
+plt.figure(figsize=(12, 8))
+sns.heatmap(corr, cmap='coolwarm')
+plt.title("Feature Correlation")
+plt.show()
