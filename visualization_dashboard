@@ -1,0 +1,8 @@
+import plotly.express as px
+
+# Anomaly over time (example assumes timestamp exists)
+df['timestamp'] = pd.to_datetime(df['Timestamp'])
+df['anomaly'] = df_processed['anomaly']
+
+fig = px.line(df, x='timestamp', y='Flow Bytes/s', color='anomaly', title="Anomaly Detection over Time")
+fig.show()
